@@ -89,7 +89,7 @@ class ShipService
    * @return Whether the missile hit the ship or not.
    */
   boolean attemptMissileHit(Ship ship, Coordinate missileCoordinate) {
-    def coordinate = ship.coordinateIsHitByMissileMap.keySet().find({ it == missileCoordinate })
+    def coordinate = ship.coordinateIsHitByMissileMap.keySet().find { it == missileCoordinate }
     if (coordinate) {
       ship.coordinateIsHitByMissileMap.replace coordinate, true
     }
