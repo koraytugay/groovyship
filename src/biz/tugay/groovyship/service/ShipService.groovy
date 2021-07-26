@@ -3,10 +3,10 @@ package biz.tugay.groovyship.service
 import biz.tugay.groovyship.modal.Coordinate
 import biz.tugay.groovyship.modal.Ship
 
+import static biz.tugay.groovyship.commons.GroovyShipConstants.MAXIMUM_SHIP_LENGTH
+import static biz.tugay.groovyship.commons.GroovyShipConstants.MINIMUM_SHIP_LENGTH
 import static java.lang.Math.min
 import static java.util.concurrent.ThreadLocalRandom.current
-
-import static biz.tugay.groovyship.commons.GroovyShipConstants.*
 
 class ShipService
 {

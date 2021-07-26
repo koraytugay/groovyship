@@ -1,8 +1,8 @@
 package biz.tugay.groovyship.service
 
 import biz.tugay.groovyship.modal.Board
-import biz.tugay.groovyship.modal.Ship
 import biz.tugay.groovyship.modal.Coordinate
+import biz.tugay.groovyship.modal.Ship
 
 class BoardService
 {
