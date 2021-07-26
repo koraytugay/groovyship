@@ -18,7 +18,7 @@ class BoardService
    * @return Whether ship was added to the board or not.
    */
   boolean addShip(Board board, Ship ship) {
-    Collection<Coordinate> shipCoordinates = ship.coordinateIsHitByMissileMap.keySet()
+    def shipCoordinates = ship.coordinateIsHitByMissileMap.keySet()
 
     if (board.ships.any { shipService.isBoundariesOfShipInCoordinates it, shipCoordinates }) {
       return false
