@@ -24,7 +24,7 @@ class BoardService
       return false
     }
 
-    board.ships.add(ship)
+    board.ships << ship
     return true
   }
 

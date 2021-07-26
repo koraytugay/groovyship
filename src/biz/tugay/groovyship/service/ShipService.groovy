@@ -77,7 +77,7 @@ class ShipService
    * @return Whether a ship immediately occupies the coordinate.
    */
   boolean hasPartOnCoordinate(Ship ship, Coordinate coordinate) {
-    return ship.coordinateIsHitByMissileMap.keySet().contains(coordinate)
+    return coordinate in ship.coordinateIsHitByMissileMap.keySet()
   }
 
   /**
