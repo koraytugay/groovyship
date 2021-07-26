@@ -37,7 +37,7 @@ class BoardService
    * @return Whether a ship was hit or not
    */
   boolean missileCoordinate(Board board, int column, int row) {
-    def missileCoordinate = Coordinate.of(column, row)
+    def missileCoordinate = Coordinate.of column, row
     board.missileAttempts << missileCoordinate
 
     def anyHit = false

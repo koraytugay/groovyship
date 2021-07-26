@@ -40,7 +40,7 @@ class CliGameController
         println "Enter coordinates: 'column,row' to send a missile, 'ng' for a new game, 'exit' to exit."
       }
 
-      String userInput = getUserInput()
+      def userInput = getUserInput()
       if ("exit" == userInput) {
         System.exit 1
       }
