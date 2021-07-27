@@ -1,6 +1,5 @@
 package biz.tugay.groovyship.cli
 
-
 import biz.tugay.groovyship.modal.Board
 import biz.tugay.groovyship.modal.Coordinate
 import biz.tugay.groovyship.service.ShipService
