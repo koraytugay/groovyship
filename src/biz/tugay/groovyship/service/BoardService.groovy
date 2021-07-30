@@ -29,21 +29,17 @@ class BoardService
   }
 
   /**
-   * Sends a missile to to the board. Returns whether it hit a ship or not.
-   *
-   * @param board The board the missile be sent to
-   * @param column The column of the missile
-   * @param row The row of the missle
-   * @return Whether a ship was hit or not
+   * Sends a missile to to the board.
+   * Returns a new board and the information whether the attempt was successful or not.
    */
-  boolean missileCoordinate(Board board, int column, int row) {
-    def missileCoordinate = Coordinate.of column, row
-    board.missileAttempts << missileCoordinate
+  def missileCoordinate(Board board, int column, int row) {
+    def newBoard = copy(board)
+    newBoard.missileAttempts << Coordinate.of(column, row)
 
     def anyHit = false
-    board.ships.each { { anyHit = anyHit || shipService.attemptMissileHit(it, missileCoordinate) } }
+    newBoard.ships.each { { anyHit = anyHit || shipService.attemptMissileHit(it, Coordinate.of(column, row)) } }
 
-    return anyHit
+    return [newBoard, anyHit]
   }
 
   /**
@@ -52,5 +48,16 @@ class BoardService
    */
   boolean allShipsSank(Board board) {
     return board.ships.every { it.coordinateIsHitByMissileMap.values().every { it } }
+  }
+
+  Board copy(Board board) {
+    def newBoard = new Board(board.boardSize)
+
+    board.missileAttempts.each { newBoard.missileAttempts << it }
+    board.ships.each {
+      newBoard.ships << shipService.copy(it)
+    }
+
+    return newBoard
   }
 }

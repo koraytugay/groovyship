@@ -102,4 +102,12 @@ class ShipService
   boolean isSank(Ship ship) {
     return ship.coordinateIsHitByMissileMap.values().every { it }
   }
+
+  Ship copy(Ship ship) {
+    def newShip = new Ship()
+    ship.coordinateIsHitByMissileMap.entrySet().forEach(entry -> {
+      newShip.coordinateIsHitByMissileMap.put(Coordinate.of(entry.key.column, entry.key.row), entry.value)
+    })
+    return newShip
+  }
 }
