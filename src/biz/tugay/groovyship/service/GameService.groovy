@@ -32,7 +32,7 @@ class GameService
     return board
   }
 
-  boolean sendMissile(Board board, int column, int row) {
+  def sendMissile(Board board, int column, int row) {
     return boardService.missileCoordinate(board, column, row)
   }
 

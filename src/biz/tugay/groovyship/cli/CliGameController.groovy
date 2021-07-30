@@ -59,7 +59,7 @@ class CliGameController
         continue
       }
 
-      sendMissile userInput, board
+      board = sendMissile userInput, board
     }
   }
 
@@ -89,19 +89,22 @@ class CliGameController
     }
   }
 
-  private static void sendMissile(String userInput, Board board) {
+  private static Board sendMissile(String userInput, Board board) {
     try {
       def column = parseInt userInput[0]
       def row = parseInt userInput[-1]
-      if (gameService.sendMissile board, column, row) {
+      def (newBoard, isHit) = gameService.sendMissile(board, column, row)
+      if (isHit) {
         println "Hit."
       }
       else {
         println "Missed."
       }
+      return newBoard
     }
     catch (Exception ignored) {
       println "Please provide coordinates in the format: 0,0"
     }
+    return board
   }
 }
