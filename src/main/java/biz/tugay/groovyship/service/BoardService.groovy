@@ -37,7 +37,9 @@ class BoardService
     newBoard.missileAttempts << Coordinate.of(column, row)
 
     def anyHit = false
-    newBoard.ships.each { { anyHit = anyHit || shipService.attemptMissileHit(it, Coordinate.of(column, row)) } }
+    for (Ship ship in newBoard.ships) {
+      anyHit = anyHit || shipService.attemptMissileHit(ship, Coordinate.of(column, row))
+    }
 
     return [newBoard, anyHit]
   }

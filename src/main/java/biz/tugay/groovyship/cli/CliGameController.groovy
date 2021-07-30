@@ -27,7 +27,7 @@ class CliGameController
     while (true) {
       if (board) {
         boardCommandLinePrinter.print board
-        if (gameService.allShipsSank board) {
+        if (gameService.allShipsSank(board)) {
           println "Congratulations, you win. Your game has ended. "
           board = null
         }

@@ -49,7 +49,7 @@ class GameService
       def ship = shipService.newRandomShip(boardSize)
 
       numberOfAttempts++
-      if (boardService.addShip board, ship) {
+      if (boardService.addShip(board, ship)) {
         numberOfShipsPlaced++
       }
 

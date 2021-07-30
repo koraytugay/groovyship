@@ -61,7 +61,7 @@ class ShipService
     ship.coordinateIsHitByMissileMap.keySet().each { shipCoordinate ->
       (-1..1).each { colIndex ->
         (-1..1).each { rowIndex ->
-          if (coordinates.contains Coordinate.of(shipCoordinate.column + colIndex, shipCoordinate.row + rowIndex)) {
+          if (coordinates.contains(Coordinate.of(shipCoordinate.column + colIndex, shipCoordinate.row + rowIndex))) {
             occupiesCoordinate = true
           }
         }
@@ -105,9 +105,9 @@ class ShipService
 
   Ship copy(Ship ship) {
     def newShip = new Ship()
-    ship.coordinateIsHitByMissileMap.entrySet().forEach(entry -> {
+    for (Map.Entry<Coordinate, Boolean> entry in ship.coordinateIsHitByMissileMap.entrySet()) {
       newShip.coordinateIsHitByMissileMap.put(Coordinate.of(entry.key.column, entry.key.row), entry.value)
-    })
+    }
     return newShip
   }
 }
