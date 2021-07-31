@@ -26,7 +26,7 @@ class GameService
 
     int numberOfAttempts = 0
     while (!board && ++numberOfAttempts < 100) {
-      board = boardWithRandomShips(boardSize, numberOfShips)
+      board = boardWithRandomShips boardSize, numberOfShips
     }
 
     return board
