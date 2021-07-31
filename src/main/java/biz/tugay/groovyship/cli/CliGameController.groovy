@@ -1,6 +1,6 @@
 package biz.tugay.groovyship.cli
 
-import biz.tugay.groovyship.modal.Board
+import biz.tugay.groovyship.modal.Game
 import biz.tugay.groovyship.service.GameService
 
 import java.nio.charset.StandardCharsets
@@ -16,28 +16,28 @@ class CliGameController
 
   static BoardCommandLinePrinter boardCommandLinePrinter = new BoardCommandLinePrinter()
 
-  static Board board = null
-
   static void main(String[] args) {
+    Game game = null
     println "Type ng to create a new game at any time or exit to stop playing."
     println "Send missile at coordinates in the format: columnIndex,rowIndex."
     println "Top left corner is coordinates 0,0"
     println "Type ng to start a new game now."
 
     while (true) {
-      if (board) {
-        boardCommandLinePrinter.print board
-        if (gameService.allShipsSank(board)) {
+      if (game) {
+        boardCommandLinePrinter.print game.board
+        if (gameService.allShipsSank(game)) {
           println "Congratulations, you win. Your game has ended. "
-          board = null
+          game = null
         }
       }
 
-      if (!board) {
+      if (!game) {
         println "Enter one of: ng | exit"
       }
       else {
         println "Enter coordinates: 'column,row' to send a missile, 'ng' for a new game, 'exit' to exit."
+        println "Enter 'undo' or 'redo' to move back or forward in the game timeline."
       }
 
       def userInput = getUserInput()
@@ -46,24 +46,34 @@ class CliGameController
       }
 
       if ("ng" == userInput) {
-        board = newBoardBasedOnUserInput()
-        if (!board) {
+        game = newGameBasedOnUserInput()
+        if (!game) {
           println "We could not generate a random board with the provided number of ships in the provided board."
           println "Enter a bigger board and less number of ships."
         }
         continue
       }
 
-      if (board == null) {
+      if (game == null) {
         println "You either entered and unknown command or there is no active game."
         continue
       }
 
-      board = sendMissile userInput, board
+      if ("undo" == userInput) {
+        game = gameService.undo(game)
+        continue
+      }
+
+      if ("redo" == userInput) {
+        game = gameService.redo(game)
+        continue
+      }
+
+      game = sendMissile(userInput, game)
     }
   }
 
-  private static Board newBoardBasedOnUserInput() {
+  private static Game newGameBasedOnUserInput() {
     try {
       println "Board size?"
       def boardSize = parseInt getUserInput()
@@ -75,7 +85,7 @@ class CliGameController
     }
     catch (Exception e) {
       println "Something went wrong: $e.message. Try again."
-      return newBoardBasedOnUserInput()
+      return newGameBasedOnUserInput()
     }
   }
 
@@ -89,22 +99,22 @@ class CliGameController
     }
   }
 
-  private static Board sendMissile(String userInput, Board board) {
+  private static Game sendMissile(String userInput, Game game) {
     try {
       def column = parseInt userInput[0]
       def row = parseInt userInput[-1]
-      def (newBoard, isHit) = gameService.sendMissile(board, column, row)
+      def (updatedGame, isHit) = gameService.sendMissile(game, column, row)
       if (isHit) {
         println "Hit."
       }
       else {
         println "Missed."
       }
-      return newBoard
+      return updatedGame
     }
     catch (Exception ignored) {
       println "Please provide coordinates in the format: 0,0"
     }
-    return board
+    return game
   }
 }

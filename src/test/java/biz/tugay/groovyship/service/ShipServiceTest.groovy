@@ -173,20 +173,4 @@ class ShipServiceTest
     assertFalse(shipService.attemptMissileHit(ship, Coordinate.of(3, 3)))
     assertFalse(shipService.isSank(ship))
   }
-
-  @Test
-  void testCopy() {
-    def ship = new Ship(Coordinate.of(2, 2), Coordinate.of(2, 3))
-    ship.coordinateIsHitByMissileMap.put(Coordinate.of(2, 2), true)
-
-    def newShip = shipService.copy(ship)
-    newShip.coordinateIsHitByMissileMap.put(Coordinate.of(2, 3), true)
-
-    assertFalse(ship.is(newShip))
-    assertTrue(ship.coordinateIsHitByMissileMap.get(Coordinate.of(2, 2)))
-    assertFalse(ship.coordinateIsHitByMissileMap.get(Coordinate.of(2, 3)))
-
-    assertTrue(newShip.coordinateIsHitByMissileMap.get(Coordinate.of(2, 2)))
-    assertTrue(newShip.coordinateIsHitByMissileMap.get(Coordinate.of(2, 3)))
-  }
 }

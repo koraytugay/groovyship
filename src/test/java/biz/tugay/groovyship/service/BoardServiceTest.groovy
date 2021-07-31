@@ -38,17 +38,13 @@ class BoardServiceTest
     def ship = new Ship(Coordinate.of(0, 0))
     boardService.addShip(board, ship)
 
-    def (newBoard, isMissileHit) = boardService.missileCoordinate(board, 1, 0)
+    def isMissileHit = boardService.missileCoordinate(board, Coordinate.of(1, 0))
     assertFalse(isMissileHit)
-    assertFalse(board.missileAttempts.contains(Coordinate.of(1, 0)))
-    assertTrue(newBoard.missileAttempts.contains(Coordinate.of(1, 0)))
+    assertTrue(board.missileAttempts.contains(Coordinate.of(1, 0)))
 
-    def (newNewBoard, newIsMissileHit) = boardService.missileCoordinate(board, 0, 0)
-    assertFalse(isMissileHit)
-    assertTrue(newIsMissileHit)
-
-    assertFalse(newBoard.missileAttempts.contains(Coordinate.of(0, 0)))
-    assertTrue(newNewBoard.missileAttempts.contains(Coordinate.of(0, 0)))
+    isMissileHit = boardService.missileCoordinate(board, Coordinate.of(0, 0))
+    assertTrue(isMissileHit)
+    assertTrue(board.missileAttempts.contains(Coordinate.of(0, 0)))
   }
 
   @Test
@@ -57,25 +53,8 @@ class BoardServiceTest
     def ship = new Ship(Coordinate.of(0, 0))
     boardService.addShip(board, ship)
 
-    def (newBoard, isMissileHit) = boardService.missileCoordinate(board, 0, 0)
-    assertFalse(boardService.allShipsSank(board))
-
-    assertTrue(boardService.allShipsSank(newBoard))
+    def isMissileHit = boardService.missileCoordinate(board, Coordinate.of(0, 0))
     assertTrue(isMissileHit)
-  }
-
-  @Test
-  void testCopy() {
-    def ship = new Ship()
-    ship.coordinateIsHitByMissileMap.put(Coordinate.of(5, 5), false)
-
-    def board = new Board(4)
-    board.missileAttempts.add(Coordinate.of(4, 4))
-    board.ships.add(ship)
-
-    def newBoard = boardService.copy(board)
-    assertFalse(board.ships.iterator().next().is(newBoard.ships.iterator().next()))
-    assertFalse(board.missileAttempts.is(newBoard.missileAttempts))
-    assertFalse(board.is(newBoard))
+    assertTrue(boardService.allShipsSank(board))
   }
 }

@@ -9,14 +9,6 @@ class BoardService
 
   ShipService shipService = new ShipService()
 
-  /**
-   * Attempts to add the {@code ship} to the board. As per the rules of the game, a ship cannot overlay with
-   * any other existing ship on the board. Ships also cannot be adjacent to each other.
-   *
-   * @param board The board the ship will be added to, potentially having ships already added.
-   * @param ship The new ship that is being attempted to be added.
-   * @return Whether ship was added to the board or not.
-   */
   boolean addShip(Board board, Ship ship) {
     def shipCoordinates = ship.coordinateIsHitByMissileMap.keySet()
 
@@ -28,38 +20,24 @@ class BoardService
     return true
   }
 
-  /**
-   * Sends a missile to to the board.
-   * Returns a new board and the information whether the attempt was successful or not.
-   */
-  def missileCoordinate(Board board, int column, int row) {
-    def newBoard = copy(board)
-    newBoard.missileAttempts << Coordinate.of(column, row)
+  boolean missileCoordinate(Board board, Coordinate coordinate) {
+    board.missileAttempts << coordinate
 
-    def anyHit = false
-    for (Ship ship in newBoard.ships) {
-      anyHit = anyHit || shipService.attemptMissileHit(ship, Coordinate.of(column, row))
+    def missileHit = false
+    for (Ship ship in board.ships) {
+      missileHit = missileHit || shipService.attemptMissileHit(ship, coordinate)
     }
 
-    return [newBoard, anyHit]
+    return missileHit
   }
 
-  /**
-   * @param board The board to be checked if all ships on the board sank
-   * @return Whether all ships on the board sank
-   */
+  Board unMissileCoordinate(Board board, Coordinate coordinate) {
+    board.missileAttempts.remove(coordinate)
+    board.ships.each { shipService.unMissile(it, coordinate) }
+    return board
+  }
+
   boolean allShipsSank(Board board) {
     return board.ships.every { it.coordinateIsHitByMissileMap.values().every { it } }
-  }
-
-  Board copy(Board board) {
-    def newBoard = new Board(board.boardSize)
-
-    board.missileAttempts.each { newBoard.missileAttempts << it }
-    board.ships.each {
-      newBoard.ships << shipService.copy(it)
-    }
-
-    return newBoard
   }
 }
