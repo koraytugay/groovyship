@@ -38,6 +38,6 @@ class BoardService
   }
 
   boolean allShipsSank(Board board) {
-    return board.ships.every { it.coordinateIsHitByMissileMap.values().every { it } }
+    return board.ships.every { ship -> shipService.isSank(ship) }
   }
 }
