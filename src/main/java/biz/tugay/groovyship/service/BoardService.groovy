@@ -24,9 +24,10 @@ class BoardService
     board.missileAttempts << coordinate
 
     def missileHit = false
-    for (Ship ship in board.ships) {
-      missileHit = missileHit || shipService.attemptMissileHit(ship, coordinate)
-    }
+
+    board.ships.forEach({
+      missileHit = missileHit || shipService.attemptMissileHit(it, coordinate)
+    })
 
     return missileHit
   }
